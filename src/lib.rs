@@ -234,6 +234,22 @@ where
         Ok(())
     }
 
+    pub fn write_raw(
+        &mut self,
+        sx: u16,
+        sy: u16,
+        ex: u16,
+        ey: u16,
+        data: &mut [u16],
+    ) -> Result<(), Error<RST::Error>> {
+        self.set_address_window(sx, sy, ex, ey)?;
+
+        self.write_command(Instruction::RAMWR)?;
+
+        self.di.send_data(DataFormat::U16BE(data))?;
+        Ok(())
+    }
+
     ///
     /// Sets a pixel color at the given coords.
     ///
